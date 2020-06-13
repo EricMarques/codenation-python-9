@@ -19,11 +19,14 @@ class User(models.Model):
                               unique=True,
                               verbose_name='E-mail',
                               help_text='E-mail',
-                              validators=(validate_email))
+                              validators=[validate_email])
     password = models.CharField(max_length=50,
                                 verbose_name='Password',
                                 help_text='Password',
-                                validator=(MinLengthValidator(8)))
+                                validators=[MinLengthValidator(8)])
+
+    class Meta():
+        verbose_name='Usuário'
 
 
 class Agent(models.Model):
@@ -42,7 +45,10 @@ class Agent(models.Model):
     address = models.GenericIPAddressField(max_length=39,
                                            verbose_name='Endereço',
                                            help_text='Endereço IPV4/IPV6',
-                                           validators=(validate_ipv46_address))
+                                           validators=[validate_ipv46_address])
+
+    class Meta():
+        verbose_name='Agente'
 
 
 class Event(models.Model):
@@ -62,11 +68,15 @@ class Event(models.Model):
                             help_text='Observações')
     arquivado = models.BooleanField(verbose_name='Arquivado')
     date = models.DateField(verbose_name='Data',
+                            auto_now=False,
                             help_text='Data')
-    agent_id = models.ForeignKey(Agent,
-                                 on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User,
-                                on_delete=models.CASCADE)
+    agent = models.ForeignKey(Agent,
+                                 on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User,
+                                on_delete=models.DO_NOTHING)
+
+    class Meta():
+        verbose_name='Evento'
 
 
 class Group(models.Model):
@@ -74,9 +84,15 @@ class Group(models.Model):
                             verbose_name='Nome',
                             help_text='Nome')
 
+    class Meta():
+        verbose_name='Grupo'
+
 
 class GroupUser(models.Model):
-    group_id = models.ForeignKey(Group,
-                                 on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User,
-                                on_delete=models.CASCADE)
+    group = models.ForeignKey(Group,
+                                 on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User,
+                                on_delete=models.DO_NOTHING)
+
+    class Meta():
+        verbose_name='Grupo de Usuário'
