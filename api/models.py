@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
-from django.core.validators import validate_email, validate_ipv46_address
+from django.core.validators import validate_ipv46_address
 
 
 # Create your models here.
@@ -18,8 +18,7 @@ class User(models.Model):
                               null=False,
                               unique=True,
                               verbose_name='E-mail',
-                              help_text='E-mail',
-                              validators=[validate_email])
+                              help_text='E-mail')
     password = models.CharField(max_length=50,
                                 verbose_name='Password',
                                 help_text='Password',
